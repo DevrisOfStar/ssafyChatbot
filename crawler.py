@@ -19,58 +19,76 @@ def get_soup_from_url(url):
             break
         except:
             temp += 1
-    source = fp.read()
-    fp.close()
+    if temp < 10:
+        source = fp.read()
+        fp.close()
+    else:
+        return False
     return BeautifulSoup(source, "lxml")
 
 
 def crawling(url=None):  # 크롤링 함수 : url 변수를 이용해서 크롤링
+    problems = []
+    problem = []
     if url is None:
-        return
-    
-   ### 태그
-    # 문제 번호
-    list_problem_id = []
-    # 문제
-    list_QName = []
-    # 문제 정보
-    list_Info = []
-    # 정답 제출자 수
-    list_SuccessNum = []
-    # 제출자 수
-    list_SubmitNum = []
-    # 정답률
-    list_PercentCorrect = []
-
-    #삼성 문제집 URL
-    SamsungQuestionURL = "https://www.acmicpc.net/workbook/view/1152"
-    soup = get_soup_from_url(SamsungQuestionURL)
-
+        #삼성 문제집 URL
+        SamsungQuestionURL = "https://www.acmicpc.net/workbook/view/1152"
+        soup = get_soup_from_url(SamsungQuestionURL)
+    else:
+        soup = get_soup_from_url(url)
     # 태그를 나누기 위한 idx
     idx = 0
-    for i in soup.find("table", class_="table table-striped table-bordered").find_all("tr")[1:]:
-        for j in i:
-            if idx == 0:
-                list_problem_id.append(j.get_text())
-            elif idx == 1:
-                list_QName.append(j.get_text())
-            elif idx == 2:
-                list_Info.append(j.get_text())
-            elif idx == 3:
-                list_SuccessNum.append(j.get_text())
-            elif idx == 4:
-                list_SubmitNum.append(j.get_text())
-            elif idx == 5:
-                list_PercentCorrect.append(j.get_text())
-            if idx == 5:
-                idx = 0
+    if soup.find("ul",class_ = "pagination"):
+        url_list = []
+        for i in soup.find("ul",class_ = "pagination"):
+            if i.find('a'):
+                url_list.append(i.a.get("href"))
+        for i in url_list:
+            url = "https://www.acmicpc.net/" + i
+            soup = get_soup_from_url(url)
+            if soup == False:
+                print("HI")
+                continue
             else:
-                idx += 1
+                for z in soup.find("div", class_="table-responsive").find_all("tr")[1:]:
+                    for j in z:
+                        problem.append(j.get_text())
+                        if idx == 5:
+                            idx = 0
+                            problems.append(problem.copy())
+                            problem.clear()
+                        else:
+                            idx += 1
+    else:
+        for i in soup.find("div", class_="table-responsive").find_all("tr")[1:]:
+            for j in i:
+                problem.append(j.get_text())
+                if idx == 5:
+                    idx = 0
+                    # problem.append() ## 문제  URL
+                    # problem.append() ## 문제  Tags
+                    problems.append(problem.copy())
 
-
+                    problem.clear()
+                else:
+                    idx += 1
+    return problems
 def crawlProblem():  # 해당 문제 크롤링
     problems = []
+    # 삼성 문제집 URL
+    BOJ_TAG_URL = "https://www.acmicpc.net/problem/tags"
+    soup = get_soup_from_url(BOJ_TAG_URL)
 
+    # 태그를 나누기 위한 idx
+    url_list = []
+    for i in soup.find_all("td"):
+        if i.find('a'):
+            url_list.append(i.a.get("href"))
+    for i in url_list:
+        url = "https://www.acmicpc.net/"+i
+        problems = crawling(url)
+        print(problems)
+        print("==== New Tags ====")
     return problems
 
 # problem_id : 문제 번호 #user_id : 유저 아이디
@@ -95,4 +113,4 @@ def IsSolvedProblem(problem_id,user_id):   # 문제 풀이 여부 확인
 
 
 if __name__ == "__main__":  # 없는번호에 대해선 유효성검사가 안됨
-    IsSolvedProblem(7100, "yh1483")
+    crawlProblem()
