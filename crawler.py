@@ -116,8 +116,8 @@ def crawlProblem():  # 해당 문제 크롤링
         print("==== New Tags ====")
     return problems
 
-# problem_id : 문제 번호 #user_id : 유저 아이디
-def IsSolvedProblem(problem_id,user_id):   # 문제 풀이 여부 확인
+# problem_id : 문제 번호  # user_id : 유저 아이디
+def IsSolvedProblem(problem_id, user_id):   # 문제 풀이 여부 확인
     URL = "https://www.acmicpc.net/status?problem_id="+str(problem_id)+"&user_id="+user_id + "&language_id=-1&result_id=-1"
     soup = get_soup_from_url(URL)
     is_check = False
