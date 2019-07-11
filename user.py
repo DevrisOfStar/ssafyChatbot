@@ -4,11 +4,12 @@ import json
 정보 입력 및 시작부분 : User data 저장, 불러오기, 초기화, 유효성검사
 """
 
+
 class USER:
     def __init__(self, _token):  # 생성자
         self.token = _token
         self.userid = None
-
+        self.state = 0
 
     def register(self):  # json에 등록
         feeds = dict()
@@ -32,6 +33,11 @@ class USER:
             else:
                 return False
 
+    def init_id(self):  # id 초기화
+        print("초기화되었습니다.\n")
+        self.register()
+        print("사용자가 재등록 되었습니다.")
+
     def getid(self):
         return self.userid
 
@@ -42,10 +48,12 @@ class USER:
             self.register()
             print("사용자가 등록되었습니다.")
 
-    def init_id(self):  # id 초기화
-        print("초기화되었습니다.\n")
-        self.register()
-        print("사용자가 재등록 되었습니다.")
+
+    def getstate(self):
+        return self.state
+
+    def setstate(self, state):
+        self.state = state
 
 
 if __name__ == "__main__":

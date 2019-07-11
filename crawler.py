@@ -3,6 +3,8 @@
 """
 import urllib.request
 from bs4 import BeautifulSoup
+
+TagName_list = []
 # define header for urllib request
 user_agent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_5) AppleWebKit/537.36 (KHTML, like Gecko) ' \
              'Chrome/58.0.3029.110 Safari/537.36'
@@ -27,7 +29,7 @@ def get_soup_from_url(url):
     return BeautifulSoup(source, "lxml")
 
 
-def crawling(url=None, Tags ="None"):  # 크롤링 함수 : url 변수를 이용해서 크롤링
+def crawling(url=None, Tags ="None"):  # 크롤링 함수 : url 변수를 이용해서 크롤링 : 삼성 문제들 크롤링
     problems = []
     problem = []
     if url is None:
@@ -50,10 +52,9 @@ def crawling(url=None, Tags ="None"):  # 크롤링 함수 : url 변수를 이용
                 continue
             else:
                 for z in soup.find("div", class_="table-responsive").find_all("tr")[1:]:
+                    QustionURL = ""
                     for j in z:
                         problem.append(j.get_text())
-                        # 문제 URL
-                        QustionURL = ""
                         if idx == 1:
                             QustionURL = "https://www.acmicpc.net" + j.a.get("href")
                         if idx == 5:
@@ -71,11 +72,9 @@ def crawling(url=None, Tags ="None"):  # 크롤링 함수 : url 변수를 이용
                             idx += 1
     else:
         for i in soup.find("div", class_="table-responsive").find_all("tr")[1:]:
+            QustionURL = ""
             for j in i:
                 problem.append(j.get_text())
-
-                # 문제 URL
-                QustionURL = ""
                 if idx == 1:
                     QustionURL = "https://www.acmicpc.net" + j.a.get("href")
                 if idx == 5:
@@ -94,7 +93,7 @@ def crawling(url=None, Tags ="None"):  # 크롤링 함수 : url 변수를 이용
     return problems
 
 
-def crawlProblem():  # 해당 문제 크롤링
+def crawlProblem():  # 모든 분류별 문제 크롤링
     problems = []
     # 삼성 문제집 URL
     BOJ_TAG_URL = "https://www.acmicpc.net/problem/tags"
@@ -104,20 +103,19 @@ def crawlProblem():  # 해당 문제 크롤링
     url_list = []
 
     # 태그 모음
-    TagName_list = []
+    global TagName_list
     for i in soup.find_all("td"):
         if i.find('a'):
             url_list.append(i.a.get("href"))
             TagName_list.append(i.get_text())
     for i in range(len(url_list)):
         url = "https://www.acmicpc.net/"+url_list[i]
-        problems = crawling(url, TagName_list[i])
-        print(problems)
-        print("==== New Tags ====")
+        problems += crawling(url, TagName_list[i])
     return problems
 
+
 # problem_id : 문제 번호  # user_id : 유저 아이디
-def IsSolvedProblem(problem_id, user_id):   # 문제 풀이 여부 확인
+def IsSolvedProblem(problem_id, user_id):  # 문제 풀이 여부 확인
     URL = "https://www.acmicpc.net/status?problem_id="+str(problem_id)+"&user_id="+user_id + "&language_id=-1&result_id=-1"
     soup = get_soup_from_url(URL)
     is_check = False
