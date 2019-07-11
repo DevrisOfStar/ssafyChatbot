@@ -27,7 +27,7 @@ def get_soup_from_url(url):
     return BeautifulSoup(source, "lxml")
 
 
-def crawling(url=None):  # 크롤링 함수 : url 변수를 이용해서 크롤링
+def crawling(url=None, Tags ="None"):  # 크롤링 함수 : url 변수를 이용해서 크롤링
     problems = []
     problem = []
     if url is None:
@@ -47,14 +47,20 @@ def crawling(url=None):  # 크롤링 함수 : url 변수를 이용해서 크롤�
             url = "https://www.acmicpc.net/" + i
             soup = get_soup_from_url(url)
             if soup == False:
-                print("HI")
                 continue
             else:
                 for z in soup.find("div", class_="table-responsive").find_all("tr")[1:]:
                     for j in z:
                         problem.append(j.get_text())
+                        # 문제 URL
+                        QustionURL = ""
+                        if idx == 1:
+                            QustionURL = "https://www.acmicpc.net" + j.a.get("href")
                         if idx == 5:
                             idx = 0
+                            problem.append(QustionURL)
+                            # 태그
+                            problem.append(Tags)
                             problems.append(problem.copy())
                             problem.clear()
                         else:
@@ -63,12 +69,17 @@ def crawling(url=None):  # 크롤링 함수 : url 변수를 이용해서 크롤�
         for i in soup.find("div", class_="table-responsive").find_all("tr")[1:]:
             for j in i:
                 problem.append(j.get_text())
+
+                # 문제 URL
+                QustionURL = ""
+                if idx == 1:
+                    QustionURL = "https://www.acmicpc.net" + j.a.get("href")
                 if idx == 5:
                     idx = 0
-                    # problem.append() ## 문제  URL
-                    # problem.append() ## 문제  Tags
+                    problem.append(QustionURL)
+                    # 태그
+                    problem.append(Tags)
                     problems.append(problem.copy())
-
                     problem.clear()
                 else:
                     idx += 1
@@ -81,12 +92,16 @@ def crawlProblem():  # 해당 문제 크롤링
 
     # 태그를 나누기 위한 idx
     url_list = []
+
+    #태그 모음
+    TagName_list = []
     for i in soup.find_all("td"):
         if i.find('a'):
             url_list.append(i.a.get("href"))
-    for i in url_list:
-        url = "https://www.acmicpc.net/"+i
-        problems = crawling(url)
+            TagName_list.append(i.get_text())
+    for i in range(len(url_list)):
+        url = "https://www.acmicpc.net/"+url_list[i]
+        problems = crawling(url, TagName_list[i])
         print(problems)
         print("==== New Tags ====")
     return problems
