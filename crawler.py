@@ -84,6 +84,8 @@ def crawling(url=None, Tags ="None"):  # 크롤링 함수 : url 변수를 이용
                 else:
                     idx += 1
     return problems
+
+
 def crawlProblem():  # 해당 문제 크롤링
     problems = []
     # 삼성 문제집 URL
@@ -93,7 +95,7 @@ def crawlProblem():  # 해당 문제 크롤링
     # 태그를 나누기 위한 idx
     url_list = []
 
-    #태그 모음
+    # 태그 모음
     TagName_list = []
     for i in soup.find_all("td"):
         if i.find('a'):

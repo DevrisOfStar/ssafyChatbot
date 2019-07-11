@@ -11,7 +11,6 @@ class Scheduler:
         send_problem("daily")
 
     def daily_problem_schedule(self):  # daily 문제 전송 스케쥴
-        # schedule.every(5).seconds.do(self.send_daily)
         schedule.every().day.at("08:00").do(self.send_daily)
         while True:
             schedule.run_pending()
@@ -24,6 +23,7 @@ class Scheduler:
     def problem_update_schedule(self):
         THREE_HOURS = 60 * 60 * 3
         schedule.every(12).hours.do(self.send_daily)
+
         while True:
             schedule.run_pending()
             time.sleep(THREE_HOURS)
