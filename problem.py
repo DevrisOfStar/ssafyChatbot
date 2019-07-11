@@ -14,7 +14,7 @@ class Problem:
             self.classify = []  # 분류 : DFS, BFS, ...
         self.is_samsung = is_samsung  # 삼성 기출문제 여부
 
-    def add_classify(self, classification):
+    def add_classify(self, classification):  # 분류 추가
         self.classify.append(classification)
 
     def plus(self):
