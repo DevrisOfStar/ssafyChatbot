@@ -27,7 +27,7 @@ def get_soup_from_url(url):
     return BeautifulSoup(source, "lxml")
 
 
-def crawling(url=None):  # 크롤링 함수 : url 변수를 이용해서 크롤링
+def crawling(url=None, Tags ="None"):  # 크롤링 함수 : url 변수를 이용해서 크롤링
     problems = []
     problem = []
     if url is None:
@@ -66,6 +66,8 @@ def crawling(url=None):  # 크롤링 함수 : url 변수를 이용해서 크롤�
                 if idx == 5:
                     idx = 0
                     # problem.append() ## 문제  URL
+                    problem.append(Tags)
+                    print(problem)
                     # problem.append() ## 문제  Tags
                     problems.append(problem.copy())
 
@@ -113,4 +115,4 @@ def IsSolvedProblem(problem_id,user_id):   # 문제 풀이 여부 확인
 
 
 if __name__ == "__main__":  # 없는번호에 대해선 유효성검사가 안됨
-    crawlProblem()
+    crawling()
