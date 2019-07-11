@@ -10,6 +10,19 @@ class USER:
         self.userid = None
 
 
+    def register(self):  # json에 등록
+        feeds = dict()
+        with open('./database/userInfo.json', 'r', encoding='utf-8') as json_file:
+            feeds = json.load(json_file)
+
+        with open('./database/userInfo.json', 'w', encoding='utf-8') as json_file:
+            userid = input("User ID를 입력해주세요. : ")
+            # 사용자아이디 유효성 검사 필요
+            self.userid = str(userid)
+            feeds[self.token] = self.userid
+            json.dump(feeds, json_file)
+
+
     def isExistUser(self, token):  # DB에 존재하는지 판단하기
         with open('./database/userInfo.json', encoding='utf-8') as json_file:
             json_data = json.load(json_file)
@@ -27,22 +40,14 @@ class USER:
         if self.isExistUser(self.token):  # id가 db에 존재하는 경우
             print(self.userid + "님, 반갑습니다.")  # 데이터를 넘겨 줄 예정
         else:   # id가 db에 존재하지 않는 경우
-            feeds = dict()
-            with open('./database/userInfo.json', 'r', encoding='utf-8') as json_file:
-                feeds = json.load(json_file)
-
-            with open('./database/userInfo.json','w', encoding='utf-8') as json_file:
-                userid = input("User ID를 입력해주세요. : ")
-                # 사용자아이디 유효성 검사 필요
-                self.userid = str(userid)
-                feeds[self.token] = self.userid
-                json.dump(feeds, json_file)
+            self.register()
             print("사용자가 등록되었습니다.")
 
     def init_id(self):  # id 초기화
-        pass
-
+        print("초기화되었습니다.\n")
+        self.register()
+        print("사용자가 재등록 되었습니다.")
 
 if __name__ == "__main__":
-    user = USER("token2")
+    user = USER("token3")
     user.setid()
