@@ -17,7 +17,8 @@ class Problem:
     def add_classify(self, classification):
         self.classify.append(classification)
 
-
+    def plus(self):
+        print("HI")
 if __name__ == "__main__":
     p = Problem(1, "제목", ["정보", "태그"], 100, 200, 0.2, is_samsung=True)  # example.
     p.add_classify("DFS")
