@@ -32,6 +32,7 @@ class Scheduler:
         if _type == 0:  # daily 문제 전송
             alarm_thread = threading.Thread(target=self.daily_problem_schedule)
             alarm_thread.start()
+
         elif _type == 1:  # 문제 최신 업데이트
             alarm_thread = threading.Thread(target=self.problem_update_schedule)
             alarm_thread.start()
