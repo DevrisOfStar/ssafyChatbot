@@ -20,6 +20,8 @@ class USER:
             else:
                 return False
 
+    def getid(self):
+        return self.userid
 
     def setid(self):  # 사용자 정보를 저장 혹은 불러오기 : 사용자 정보가 DB에 없으면, DB에 저장 및 _userid 변수에 넣기. 있으면 DB 불러와서 넣기.
         if self.isExistUser(self.token):  # id가 db에 존재하는 경우
