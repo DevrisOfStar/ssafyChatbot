@@ -61,6 +61,10 @@ def crawling(url=None, Tags ="None"):  # 크롤링 함수 : url 변수를 이용
                             problem.append(QustionURL)
                             # 태그
                             problem.append(Tags)
+                            if soup.find("title").get_text() == "문제집: 삼성 SW 역량 테스트 기출 문제 (baekjoon)":
+                                problem.append(True)
+                            else:
+                                problem.append(False)
                             problems.append(problem.copy())
                             problem.clear()
                         else:
@@ -79,6 +83,10 @@ def crawling(url=None, Tags ="None"):  # 크롤링 함수 : url 변수를 이용
                     problem.append(QustionURL)
                     # 태그
                     problem.append(Tags)
+                    if soup.find("title").get_text() == "문제집: 삼성 SW 역량 테스트 기출 문제 (baekjoon)":
+                        problem.append(True)
+                    else:
+                        problem.append(False)
                     problems.append(problem.copy())
                     problem.clear()
                 else:
