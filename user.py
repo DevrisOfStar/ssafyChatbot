@@ -22,7 +22,6 @@ class USER:
             feeds[self.token] = self.userid
             json.dump(feeds, json_file)
 
-
     def isExistUser(self, token):  # DB에 존재하는지 판단하기
         with open('./database/userInfo.json', encoding='utf-8') as json_file:
             json_data = json.load(json_file)
@@ -47,6 +46,7 @@ class USER:
         print("초기화되었습니다.\n")
         self.register()
         print("사용자가 재등록 되었습니다.")
+
 
 if __name__ == "__main__":
     user = USER("token3")
