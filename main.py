@@ -16,6 +16,7 @@ slack_events_adaptor = SlackEventAdapter(SLACK_SIGNING_SECRET, "/listening", app
 slack_web_client = WebClient(token=SLACK_TOKEN)
 online_User_list = []
 
+Time_Table_List = []
 
 @slack_events_adaptor.on("group_left")
 def group_left_(event_data):
@@ -26,7 +27,12 @@ def group_left_(event_data):
 
 @slack_events_adaptor.on("app_mention")
 def app_mentioned(event_data):
+    global Time_Table_List
     channel = event_data["event"]["channel"]
+    if event_data["event"]["event_ts"] in Time_Table_List:
+        return
+    else:
+        Time_Table_List.append(event_data["event"]["event_ts"])
     for i in range(len(event_data["event"]["text"])):
         if event_data["event"]["text"][i] == ">":
             text = event_data["event"]["text"][i+2:]
@@ -98,6 +104,9 @@ def app_mentioned(event_data):
         channel=event_data["event"]["channel"],
         text=_text
     )
+    Time_Table_List.remove(event_data["event"]["event_ts"])
+
+
 def start_server():
     app.run('0.0.0.0', port=5000)
 
