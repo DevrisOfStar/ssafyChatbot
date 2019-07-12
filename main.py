@@ -55,7 +55,7 @@ def app_mentioned(event_data):
                 elif i.getstate() == 2:
                     if text == "YES":
                         i.setstate(3)
-                        _text = "알고리즘 분류 선택" + " ".join(getclassifylist())
+                        _text = "알고리즘 분류 선택\n" + "\n".join(getclassifylist())
                     elif text == "NO":
                         i.setstate(1)
                         _text = "아이디를 입력해 주세요."
