@@ -3,9 +3,8 @@
 크롤링한 문제들을 DB에 저장, DB로부터 불러오기, 업데이트 구현
 """
 from crawler import crawlProblem, crawling
-from problem import *
+import array as arr
 import json
-
 
 def getProblems(isDaily=False):  #  crawling한 문제들을 json 방식으로 return
     if isDaily:
@@ -60,17 +59,19 @@ def loadProblems():  # db로 부터 불러옴
         problems = json.load(json_file)
         return problems
 
-
-def findProblem(classify='Daily'):
-    if classify == 'Daily':
-        pass
-    elif classify == 'Samsung':
-        pass
-    else:
-        classify
+def getclassifylist():
+    problems = loadProblems()
+    l = []
+    for problem in problems:
+        for classify in problem['classify']:
+            if classify in l:
+                pass
+            elif classify!="None":
+                l.append(classify)
+    return l
 
 
 
 if __name__ == "__main__" :
     # saveProblems()
-    loadProblems()
+    print(getclassifylist())

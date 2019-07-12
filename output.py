@@ -18,9 +18,18 @@ def send_problem(classification=None, user_id=None):  # classification : 분류(
         return a_problem[random.randrange(0, len(a_problem))]
     else :
         b_problem = loadProblems()
-        b_problem = [pro_ for pro_ in b_problem if classification in pro_['classify'] and not IsSolvedProblem(pro_['number'], user_id)]
-        r = random.randrange(3, len(b_problem) - 3)
-        return b_problem[r-3:r]
+        b_problem = [pro_ for pro_ in b_problem if classification in pro_['classify']]
+        if len(b_problem) <= 3:
+            return b_problem
+        problems = []
+        while len(problems) < 3:
+            r = random.randrange(0, len(b_problem))
+            if IsSolvedProblem(b_problem[r]['number'], user_id) or b_problem[r] in problems:
+                pass
+            else:
+                problems.append(b_problem[r])
+
+        return problems
 
 
 def print_graph_classification_correction(userid):  # userid : 사용자 ID의 분류별 정답비율 그래프 출력
@@ -28,4 +37,4 @@ def print_graph_classification_correction(userid):  # userid : 사용자 ID의 �
 
 
 if __name__ == "__main__":
-    print(send_problem("Daily", user_id="yh1483"))
+    print(send_problem("다이나믹 프로그래밍", user_id="yh1483"))

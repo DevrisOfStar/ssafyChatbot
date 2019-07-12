@@ -131,7 +131,7 @@ def IsSolvedProblem(problem_id, user_id):  # 문제 풀이 여부 확인
         else:
             print("틀린 문제")
     else:
-        print("시도하지 않은 문제")
+        return False
     return True
 
 
