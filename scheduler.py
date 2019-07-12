@@ -2,6 +2,7 @@ import schedule
 import time
 import threading
 from output import send_problem
+from problemManager import saveProblems
 """
 daily 문제를 전송하기 위한 클래스 : timer 필요
 """
@@ -17,7 +18,7 @@ class Scheduler:
             time.sleep(1)
 
     def update_problem(self):
-        pass
+        saveProblems()
 
 
     def problem_update_schedule(self):

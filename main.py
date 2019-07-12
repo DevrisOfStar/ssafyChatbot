@@ -2,7 +2,7 @@
 from flask import Flask
 from slack import WebClient
 from slackeventsapi import SlackEventAdapter
-
+from output import *
 from copy import deepcopy
 from user import *
 from output import *
@@ -15,7 +15,7 @@ app = Flask(__name__)
 slack_events_adaptor = SlackEventAdapter(SLACK_SIGNING_SECRET, "/listening", app)
 slack_web_client = WebClient(token=SLACK_TOKEN)
 online_User_list = []
-
+channel_list = []
 Time_Table_List = []
 
 @slack_events_adaptor.on("group_left")
@@ -28,7 +28,16 @@ def group_left_(event_data):
 @slack_events_adaptor.on("app_mention")
 def app_mentioned(event_data):
     global Time_Table_List
+    global channel_list
+
     channel = event_data["event"]["channel"]
+
+    if channel in channel_list:
+        pass
+    else:
+        channel_list.append(channel)
+
+
     if event_data["event"]["event_ts"] in Time_Table_List:
         return
     else:

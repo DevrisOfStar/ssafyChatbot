@@ -4,7 +4,7 @@
 from problemManager import *
 from crawler import IsSolvedProblem
 import random
-
+from main import *
 # DB : 사용자 정보(userInfo.json or ..) - (Token, ID) -> Token : slack의 userID, ID : 백준 ID
 #      데일리 여부 판단 (isDaily.json) - Problem 객체와 유사
 #      문제 정보(ProblemInfo.json) - Problem 객체와 유사
@@ -14,8 +14,21 @@ def send_problem(classification=None, user_id=None):  # classification : 분류(
     if classification == None:  # 미분류 문제
         return None
     elif classification == "Daily":  # Daily 문제
+        global slack_web_client
+        global channel_list
+
         a_problem = loadDaily()
-        return a_problem[random.randrange(0, len(a_problem))]
+        t = a_problem[random.randrange(0, len(a_problem))]
+        print(channel_list)
+        for channel in channel_list:
+            slack_web_client.chat_postMessage(
+            channel= channel,
+            text = "\n문제 번호 : "+str(t.get("number"))+"\n문제 이름 : "+\
+                                    str(t.get("subject"))+"\n정답자 / 제출자 : "+ str(t.get(
+                                "cor"))+"/"+str(t.get("total")) +"\n링크 : "+ \
+                                    str(t.get("link"))+"\n"
+
+            )
     else :
         b_problem = loadProblems()
         b_problem = [pro_ for pro_ in b_problem if classification in pro_['classify']]
