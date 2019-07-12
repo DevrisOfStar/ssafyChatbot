@@ -7,8 +7,8 @@ from copy import deepcopy
 from user import *
 from output import *
 
-SLACK_TOKEN = "xoxb-677120743489-689663400837-IA7Z92mejXsjLBgbMuRsJH4Y"
-SLACK_SIGNING_SECRET = "3e18b519376ca1b60fad0e7258f77db3"
+SLACK_TOKEN = "t"
+SLACK_SIGNING_SECRET = "t"
 
 app = Flask(__name__)
 
