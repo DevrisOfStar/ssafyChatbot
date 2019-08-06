@@ -1,5 +1,5 @@
-# ssafy_chatbot
-chatbot_project
+# ssafyChatbot
+chatbotProject
 
 #2019-07-10
 - crawling() 함수 구현
